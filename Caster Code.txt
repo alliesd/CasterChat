@@ -1,0 +1,45 @@
+var platform = "Unknown";
+
+if (event.sender && event.sender.platform) {
+    platform = String(event.sender.platform);
+}
+
+if (platform.toLowerCase().indexOf("twitch") !== -1) {
+    platform = "Twitch";
+} else if (platform.toLowerCase().indexOf("youtube") !== -1) {
+    platform = "YouTube";
+} else if (platform.toLowerCase().indexOf("kick") !== -1) {
+    platform = "Kick";
+}
+else if (platform.toLowerCase().indexOf("tiktok") !== -1) {
+    platform = "TikTok";
+}
+
+var user = "Unknown";
+
+if (event.sender) {
+    if (event.sender.displayname) {
+        user = String(event.sender.displayname);
+    } else if (event.sender.username) {
+        user = String(event.sender.username);
+    }
+}
+
+var message = "";
+
+if (event.raw) {
+    message = String(event.raw);
+} else if (event.message) {
+    message = String(event.message);
+} else if (event.html) {
+    message = String(event.html);
+} else if (rawArgs) {
+    message = String(rawArgs);
+}
+
+fetch.asText(
+    "http://127.0.0.1:8787/?" +
+    "platform=" + encodeURIComponent(platform) +
+    "&user=" + encodeURIComponent(user) +
+    "&message=" + encodeURIComponent(message)
+);
